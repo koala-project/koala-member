@@ -1,6 +1,8 @@
 package com.koala.member;
 
+import com.koala.utils.config.Queue;
 import com.koala.utils.config.annotation.EnableDataSourceConfiguration;
+import com.koala.utils.config.annotation.EnableJMSSender;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -16,6 +18,7 @@ import org.springframework.context.annotation.ImportResource;
 @SpringBootApplication
 @ComponentScan("com.koala")
 @EnableDataSourceConfiguration
+@EnableJMSSender(queue = Queue.GROUP_ORDERE_PAID)
 @ImportResource(locations = "dubbo-provider.xml")
 public class Application implements CommandLineRunner{
 
