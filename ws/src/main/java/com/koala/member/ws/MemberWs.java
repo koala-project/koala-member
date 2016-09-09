@@ -36,7 +36,7 @@ public class MemberWs implements MemberService {
         user.setUpdateDate(userInfo.getUpdateDate());
         userLogic.insert(user);
         Map<String, Object> map = new HashMap<>();
-        map.put("userInfo",user);
+        map.put("userName",user.getUserName());
         messageSender.sendMessage(map);
     }
 }

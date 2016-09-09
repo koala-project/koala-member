@@ -1,3 +1,8 @@
+spring:
+  activemq:
+      broker-url: tcp://192.168.73.128:61616
+      user: root
+      password: admin
 mybatis:
   driverClassName: com.mysql.jdbc.Driver
   url: jdbc:mysql://qdm107936212.my3w.com:3306/qdm107936212_db?characterEncoding=UTF-8
