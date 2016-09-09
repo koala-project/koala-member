@@ -7,6 +7,7 @@ import com.koala.member.api.response.UserInfo;
 import com.koala.utils.config.MessageSender;
 import com.koala.utils.config.Queue;
 import com.koala.utils.config.annotation.EnableJMSSender;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -38,5 +39,15 @@ public class MemberWs implements MemberService {
         Map<String, Object> map = new HashMap<>();
         map.put("userName",user.getUserName());
         messageSender.sendMessage(map);
+    }
+
+    @Override
+    public UserInfo getUserById(Long id) {
+        KlUser klUser = userLogic.findById(id);
+        if (klUser == null)return null;
+        UserInfo userInfo = new UserInfo();
+        userInfo.setRealName(klUser.getRealName());
+        userInfo.setCreateDate(klUser.getCreateDate());
+        return userInfo;
     }
 }

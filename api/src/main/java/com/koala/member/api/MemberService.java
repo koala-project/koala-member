@@ -15,4 +15,7 @@ public interface MemberService {
      * @param userInfo
      */
     public void saveUser(UserInfo userInfo);
+
+    public UserInfo getUserById(Long id);
+
 }
