@@ -35,3 +35,4 @@ redis:
     password: admin
     host: 192.168.73.128:6379
     port: 6379
+    expireSeconds: 120

@@ -7,6 +7,7 @@ import com.koala.member.api.response.UserInfo;
 import com.koala.utils.config.MessageSender;
 import com.koala.utils.config.Queue;
 import com.koala.utils.config.annotation.EnableJMSSender;
+import com.koala.utils.config.handler.RedisHandler;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
@@ -22,6 +23,9 @@ public class MemberWs implements MemberService {
     //消息推送
     @Resource
     MessageSender messageSender;
+
+    @Resource
+    RedisHandler redisHandler;
 
     @Override
     public void saveUser(UserInfo userInfo) {
@@ -44,6 +48,7 @@ public class MemberWs implements MemberService {
     @Override
     public UserInfo getUserById(Long id) {
         KlUser klUser = userLogic.findById(id);
+        redisHandler.set("K-BAICAI","小白菜",20);
         if (klUser == null)return null;
         UserInfo userInfo = new UserInfo();
         userInfo.setRealName(klUser.getRealName());
