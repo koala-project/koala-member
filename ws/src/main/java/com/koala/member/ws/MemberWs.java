@@ -48,7 +48,7 @@ public class MemberWs implements MemberService {
     @Override
     public UserInfo getUserById(Long id) {
         KlUser klUser = userLogic.findById(id);
-        redisHandler.set("K-BAICAI","小白菜",20);
+        redisHandler.set("K-BAICAI"+id,klUser.getUpdateDate().toString(),20);
         if (klUser == null)return null;
         UserInfo userInfo = new UserInfo();
         userInfo.setRealName(klUser.getRealName());
