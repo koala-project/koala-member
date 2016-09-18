@@ -23,3 +23,16 @@ jdbc:
   url: jdbc:mysql://qdm107936212.my3w.com:3306/qdm107936212_db?characterEncoding=UTF-8
   user: qdm107936212
   password: lhyyfn623
+
+redis:
+  minIdle: 5
+  maxTotal: 1000
+  maxIdle: 300
+  maxWaitMillis: 10000
+
+  cache:
+    masterName: 192.168.73.128
+    password: admin
+    host: 192.168.73.128:6379
+    port: 6379
+    expireSeconds: 120

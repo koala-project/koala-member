@@ -15,22 +15,27 @@
         <dependency>
             <groupId>com.koala</groupId>
             <artifactId>koala-member-api</artifactId>
-            <version>1.0</version>
+            <version>${project.parent.version}</version>
         </dependency>
         <dependency>
             <groupId>com.koala</groupId>
             <artifactId>koala-base-logics-member</artifactId>
-            <version>1.0</version>
+            <version>${project.parent.version}</version>
         </dependency>
         <dependency>
             <groupId>com.koala</groupId>
             <artifactId>koala-utils-config</artifactId>
-            <version>1.0</version>
+            <version>${project.parent.version}</version>
         </dependency>
         <dependency>
             <groupId>com.koala</groupId>
             <artifactId>koala-utils-common</artifactId>
-            <version>1.0</version>
+            <version>${project.parent.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.koala</groupId>
+            <artifactId>koala-utils-gateway</artifactId>
+            <version>${project.parent.version}</version>
         </dependency>
 
         <dependency>

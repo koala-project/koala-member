@@ -8,6 +8,7 @@ import com.koala.utils.config.MessageSender;
 import com.koala.utils.config.Queue;
 import com.koala.utils.config.annotation.EnableJMSSender;
 import com.koala.utils.config.handler.RedisHandler;
+import com.koala.utils.gateway.annotation.ApiParameter;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
@@ -48,11 +49,23 @@ public class MemberWs implements MemberService {
     @Override
     public UserInfo getUserById(Long id) {
         KlUser klUser = userLogic.findById(id);
-        redisHandler.set("K-BAICAI"+id,klUser.getUpdateDate().toString(),20);
+        redisHandler.set("K-BAICAI" + id, klUser.getUpdateDate().toString(), 20);
         if (klUser == null)return null;
         UserInfo userInfo = new UserInfo();
         userInfo.setRealName(klUser.getRealName());
         userInfo.setCreateDate(klUser.getCreateDate());
         return userInfo;
+    }
+
+    @Override
+    public boolean register(@ApiParameter(required = true, name = "userNAME", desc="用户名")String userName,
+                         @ApiParameter(required = true, name = "password", desc="密码")String password,
+                         @ApiParameter(required = true, name = "vCode", desc="验证码")String vCode) {
+        //验证userName格式
+        //校验验证码是否正确
+        //校验手机号是否已经注册
+        //注册（赠送优惠券）
+        //登录
+        return true;
     }
 }

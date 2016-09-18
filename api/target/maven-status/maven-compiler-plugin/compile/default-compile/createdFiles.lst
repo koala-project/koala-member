@@ -1,2 +1,3 @@
 com\koala\member\api\response\UserInfo.class
 com\koala\member\api\MemberService.class
+com\koala\member\api\errors\MemberErrorCodes.class
