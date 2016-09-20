@@ -4,6 +4,7 @@ import com.koala.base.entities.member.KlUser;
 import com.koala.base.logics.member.KlUserLogic;
 import com.koala.member.api.MemberService;
 import com.koala.member.api.response.UserInfo;
+import com.koala.utils.common.lang.DateUtils;
 import com.koala.utils.config.MessageSender;
 import com.koala.utils.config.Queue;
 import com.koala.utils.config.annotation.EnableJMSSender;
@@ -29,31 +30,18 @@ public class MemberWs implements MemberService {
     RedisHandler redisHandler;
 
     @Override
-    public void saveUser(UserInfo userInfo) {
-        System.out.println("=================="+userInfo.getDesc());
-        KlUser user = new KlUser();
-        user.setUserName(userInfo.getUserName());
-        user.setPassword(userInfo.getPassword());
-        user.setRealName(userInfo.getRealName());
-        user.setDesc(userInfo.getDesc());
-        user.setCreateId(userInfo.getCreateId());
-        user.setCreateDate(userInfo.getCreateDate());
-        user.setUpdateId(userInfo.getUpdateId());
-        user.setUpdateDate(userInfo.getUpdateDate());
-        userLogic.insert(user);
-        Map<String, Object> map = new HashMap<>();
-        map.put("userName",user.getUserName());
-        messageSender.sendMessage(map);
-    }
-
-    @Override
-    public UserInfo getUserById(Long id) {
+    public UserInfo getUserById(@ApiParameter(required = true, name = "id", desc="用户编号")long id) {
         KlUser klUser = userLogic.findById(id);
         redisHandler.set("K-BAICAI" + id, klUser.getUpdateDate().toString(), 20);
         if (klUser == null)return null;
         UserInfo userInfo = new UserInfo();
         userInfo.setRealName(klUser.getRealName());
-        userInfo.setCreateDate(klUser.getCreateDate());
+        userInfo.setPassword(klUser.getPassword());
+        userInfo.setUserName(klUser.getUserName());
+        userInfo.setCreateId(klUser.getCreateId());
+        userInfo.setUpdateId(klUser.getUpdateId());
+        userInfo.setUpdateDate(klUser.getUpdateDate().getTime());
+        userInfo.setCreateDate(klUser.getCreateDate().getTime());
         return userInfo;
     }
 
@@ -66,6 +54,21 @@ public class MemberWs implements MemberService {
         //校验手机号是否已经注册
         //注册（赠送优惠券）
         //登录
+        KlUser user = new KlUser();
+        user.setUserName(userName);
+        user.setPassword(password);
+        user.setRealName(userName);
+        user.setDesc("注册时间" + DateUtils.getDateTime());
+        user.setCreateId(1L);
+        user.setCreateDate(DateUtils.currentTime());
+        user.setUpdateId(1L);
+        user.setUpdateDate(DateUtils.currentTime());
+        userLogic.insert(user);
+        Map<String, Object> map = new HashMap<>();
+        map.put("userName",userName);
+        map.put("password",password);
+        map.put("date",DateUtils.getDateTime());
+        messageSender.sendMessage(map);
         return true;
     }
 }

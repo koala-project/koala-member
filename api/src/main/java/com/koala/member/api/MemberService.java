@@ -17,13 +17,11 @@ import com.koala.utils.gateway.define.SecurityType;
 @ApiGroup(minCode = 40000, maxCode = 41000, name = "member", owner = "liuyf", codeDefine = MemberErrorCodes.class)
 public interface MemberService {
 
-    /**
-     * 新增用户信息
-     * @param userInfo
-     */
-    public void saveUser(UserInfo userInfo);
-
-    public UserInfo getUserById(Long id);
+    @HttpApi(name = "member.get", desc = "获取用户信息", security = SecurityType.None, owner = "owner")
+    @DesignedErrorCode({
+            MemberErrorCodes.MEMBER_USER_NOT_EXIST
+    })
+    public UserInfo getUserById(@ApiParameter(required = true, name = "id", desc="用户编号")long id);
 
     @HttpApi(name = "member.register", desc = "用户注册", security = SecurityType.None, owner = "owner")
     @DesignedErrorCode({

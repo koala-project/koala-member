@@ -1,5 +1,7 @@
 package com.koala.member.api.response;
 
+import com.koala.utils.gateway.annotation.Description;
+
 import java.io.Serializable;
 import java.util.Date;
 
@@ -9,22 +11,25 @@ import java.util.Date;
  * @Time 13:57
  * @Description
  */
+@Description("用户信息")
 public class UserInfo implements Serializable {
-    private String userName;
 
-    private String password;
-
-    private String realName;
-
-    private String desc;
-
-    private Long createId;
-
-    private Date createDate;
-
-    private Long updateId;
-
-    private Date updateDate;
+    @Description("用户名称")
+    public String userName;
+    @Description("用户密码")
+    public String password;
+    @Description("真实姓名")
+    public String realName;
+    @Description("描述")
+    public String desc;
+    @Description("创建人编号")
+    public long createId;
+    @Description("创建时间")
+    public long createDate;
+    @Description("修改人编号")
+    public long updateId;
+    @Description("修改时间")
+    public long updateDate;
 
     public String getUserName() {
         return userName;
@@ -58,35 +63,35 @@ public class UserInfo implements Serializable {
         this.desc = desc;
     }
 
-    public Long getCreateId() {
+    public long getCreateId() {
         return createId;
     }
 
-    public void setCreateId(Long createId) {
+    public void setCreateId(long createId) {
         this.createId = createId;
     }
 
-    public Date getCreateDate() {
+    public long getCreateDate() {
         return createDate;
     }
 
-    public void setCreateDate(Date createDate) {
+    public void setCreateDate(long createDate) {
         this.createDate = createDate;
     }
 
-    public Long getUpdateId() {
+    public long getUpdateId() {
         return updateId;
     }
 
-    public void setUpdateId(Long updateId) {
+    public void setUpdateId(long updateId) {
         this.updateId = updateId;
     }
 
-    public Date getUpdateDate() {
+    public long getUpdateDate() {
         return updateDate;
     }
 
-    public void setUpdateDate(Date updateDate) {
+    public void setUpdateDate(long updateDate) {
         this.updateDate = updateDate;
     }
 }
