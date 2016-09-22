@@ -1,16 +1,24 @@
 package com.koala.member.ws;
 
+import com.alibaba.dubbo.rpc.RpcContext;
+import com.google.common.base.Strings;
 import com.koala.base.entities.member.KlUser;
 import com.koala.base.logics.member.KlUserLogic;
 import com.koala.member.api.MemberService;
+import com.koala.member.api.errors.MemberErrorCodes;
 import com.koala.member.api.response.UserInfo;
+import com.koala.member.common.captcha.RandomValidateCode;
+import com.koala.member.common.captcha.RandomValidateCodeResult;
 import com.koala.utils.common.lang.DateUtils;
 import com.koala.utils.config.MessageSender;
 import com.koala.utils.config.Queue;
 import com.koala.utils.config.annotation.EnableJMSSender;
 import com.koala.utils.config.handler.RedisHandler;
 import com.koala.utils.gateway.annotation.ApiParameter;
+import com.koala.utils.gateway.define.ExtendParameter;
+import com.koala.utils.gateway.entity.ServiceException;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.data.redis.core.RedisCallback;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -70,5 +78,28 @@ public class MemberWs implements MemberService {
         map.put("date",DateUtils.getDateTime());
         messageSender.sendMessage(map);
         return true;
+    }
+
+    @Override
+    public String getImageCode()
+            throws ServiceException {
+
+        String identity = RpcContext.getContext().getAttachment(ExtendParameter.idfa);
+
+        if (Strings.isNullOrEmpty(identity)) {
+            return null;
+        }
+
+        try {
+            RandomValidateCodeResult result = new RandomValidateCode().getRandomCodeResult(identity);
+            if (!result.getIsSuccess()) {
+                throw new ServiceException(MemberErrorCodes.errorCodes_MEMBER_GET_VALIDATE_CODE_ERROR);
+            }
+            //redis 缓存 60s
+            redisHandler.set(result.getValidateCodeKey(), result.getValidateCode(), 60);
+            return result.getBase64String();
+        } catch (Exception ex) {
+            throw new ServiceException(MemberErrorCodes.errorCodes_MEMBER_GET_VALIDATE_CODE_ERROR);
+        }
     }
 }

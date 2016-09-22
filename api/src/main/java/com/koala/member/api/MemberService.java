@@ -7,6 +7,7 @@ import com.koala.utils.gateway.annotation.ApiParameter;
 import com.koala.utils.gateway.annotation.DesignedErrorCode;
 import com.koala.utils.gateway.annotation.HttpApi;
 import com.koala.utils.gateway.define.SecurityType;
+import com.koala.utils.gateway.entity.ServiceException;
 
 /**
  * @Author Liuyf
@@ -35,4 +36,7 @@ public interface MemberService {
                          @ApiParameter(required = true, name = "password", desc="密码")String password,
                          @ApiParameter(required = true, name = "vCode", desc="验证码")String vCode);
 
+    @HttpApi(name = "common.imageCode.get", desc = "获取图片验证码", security = SecurityType.None, owner = "owner")
+    @DesignedErrorCode(MemberErrorCodes.MEMBER_GET_VALIDATE_CODE_ERROR)
+    public String getImageCode() throws ServiceException;
 }

@@ -3,7 +3,6 @@ package com.koala.member.api.response;
 import com.koala.utils.gateway.annotation.Description;
 
 import java.io.Serializable;
-import java.util.Date;
 
 /**
  * @Author Liuyf

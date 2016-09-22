@@ -1,3 +1,5 @@
-com\koala\member\ws\MemberWs.class
 com\koala\member\Application.class
 com\koala\member\listener\ListenerQueue.class
+com\koala\member\ws\MemberWs.class
+com\koala\member\common\captcha\RandomValidateCode.class
+com\koala\member\common\captcha\RandomValidateCodeResult.class
