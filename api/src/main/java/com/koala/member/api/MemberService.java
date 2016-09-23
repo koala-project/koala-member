@@ -1,6 +1,7 @@
 package com.koala.member.api;
 
 import com.koala.member.api.errors.MemberErrorCodes;
+import com.koala.member.api.response.CustomerLoginInfo;
 import com.koala.member.api.response.UserInfo;
 import com.koala.utils.gateway.annotation.ApiGroup;
 import com.koala.utils.gateway.annotation.ApiParameter;
@@ -18,11 +19,13 @@ import com.koala.utils.gateway.entity.ServiceException;
 @ApiGroup(minCode = 40000, maxCode = 41000, name = "member", owner = "liuyf", codeDefine = MemberErrorCodes.class)
 public interface MemberService {
 
-    @HttpApi(name = "member.get", desc = "获取用户信息", security = SecurityType.None, owner = "owner")
+    @HttpApi(name = "member.info", desc = "获取用户信息", security = SecurityType.UserLogin, owner = "owner")
     @DesignedErrorCode({
             MemberErrorCodes.MEMBER_USER_NOT_EXIST
     })
-    public UserInfo getUserById(@ApiParameter(required = true, name = "id", desc="用户编号")long id);
+    public UserInfo info() throws ServiceException ;
+
+
 
     @HttpApi(name = "member.register", desc = "用户注册", security = SecurityType.None, owner = "owner")
     @DesignedErrorCode({
@@ -36,7 +39,37 @@ public interface MemberService {
                          @ApiParameter(required = true, name = "password", desc="密码")String password,
                          @ApiParameter(required = true, name = "vCode", desc="验证码")String vCode);
 
+
+
     @HttpApi(name = "common.imageCode.get", desc = "获取图片验证码", security = SecurityType.None, owner = "owner")
     @DesignedErrorCode(MemberErrorCodes.MEMBER_GET_VALIDATE_CODE_ERROR)
     public String getImageCode() throws ServiceException;
+
+
+    @HttpApi(name = "common.imageCode.verify", desc = "图片验证码,验证是否通过", security = SecurityType.None, owner = "owner")
+    @DesignedErrorCode(MemberErrorCodes.MEMBER_VERIFY_CODE_ERROR)
+    public boolean verifyImageCode(
+            @ApiParameter(required = true, name = "vCode", desc = "图片验证码") String vCode)
+            throws ServiceException;
+
+
+    /**
+     * 登录
+     * @param userName
+     * @param password
+     * @return
+     * @throws ServiceException
+     */
+    @HttpApi(name = "member.login", desc = "登录", security = SecurityType.None, owner = "kfj")
+    @DesignedErrorCode({
+            MemberErrorCodes.MEMBER_PASSWORD_ERROR,
+            MemberErrorCodes.MEMBER_USERNAME_NOT_EXIST,
+            MemberErrorCodes.MEMBER_LOGIN_FAILED
+    })
+    public CustomerLoginInfo login(
+            @ApiParameter(required = true, name = "userName", desc = "登录名") String userName,
+            @ApiParameter(required = true, name = "password", desc = "登录密码") String password,
+            @ApiParameter(required = false, name = "wxOpenId", desc = "微信用户标识") String wxOpenId)
+            throws ServiceException;
+
 }

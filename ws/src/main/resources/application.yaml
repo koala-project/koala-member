@@ -36,3 +36,7 @@ redis:
     host: 192.168.73.128:6379
     port: 6379
     expireSeconds: 120
+
+token:
+  aesKey: YXBpLnVjYWl5dWFuLmNvbQ==
+  expire: 7200000
