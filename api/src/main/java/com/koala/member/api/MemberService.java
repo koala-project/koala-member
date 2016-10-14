@@ -3,6 +3,7 @@ package com.koala.member.api;
 import com.koala.member.api.errors.MemberErrorCodes;
 import com.koala.member.api.response.CustomerLoginInfo;
 import com.koala.member.api.response.UserInfo;
+import com.koala.member.api.response.UserRoleInfo;
 import com.koala.utils.gateway.annotation.ApiGroup;
 import com.koala.utils.gateway.annotation.ApiParameter;
 import com.koala.utils.gateway.annotation.DesignedErrorCode;
@@ -60,7 +61,7 @@ public interface MemberService {
      * @return
      * @throws ServiceException
      */
-    @HttpApi(name = "member.login", desc = "登录", security = SecurityType.None, owner = "kfj")
+    @HttpApi(name = "member.login", desc = "登录", security = SecurityType.None, owner = "owner")
     @DesignedErrorCode({
             MemberErrorCodes.MEMBER_PASSWORD_ERROR,
             MemberErrorCodes.MEMBER_USERNAME_NOT_EXIST,
@@ -72,4 +73,9 @@ public interface MemberService {
             @ApiParameter(required = false, name = "wxOpenId", desc = "微信用户标识") String wxOpenId)
             throws ServiceException;
 
+    @HttpApi(name = "member.get", desc = "获取某个用户信息", security = SecurityType.None, owner = "owner")
+    @DesignedErrorCode({
+            MemberErrorCodes.MEMBER_USER_NOT_EXIST
+    })
+    public UserRoleInfo searchUser(@ApiParameter(required = true, name = "id", desc = "用户ID")long id);
 }

@@ -3,11 +3,15 @@ package com.koala.member.ws;
 import com.alibaba.dubbo.rpc.RpcContext;
 import com.google.common.base.Strings;
 import com.koala.base.entities.member.KlUser;
+import com.koala.base.entities.member.SysUser;
 import com.koala.base.logics.member.KlUserLogic;
+import com.koala.base.logics.member.SysUserLogic;
 import com.koala.member.api.MemberService;
 import com.koala.member.api.errors.MemberErrorCodes;
 import com.koala.member.api.response.CustomerLoginInfo;
+import com.koala.member.api.response.SysRoleInfo;
 import com.koala.member.api.response.UserInfo;
+import com.koala.member.api.response.UserRoleInfo;
 import com.koala.member.common.captcha.RandomValidateCode;
 import com.koala.member.common.captcha.RandomValidateCodeResult;
 import com.koala.member.service.MemberBusiness;
@@ -34,10 +38,7 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.text.SimpleDateFormat;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 @Service
 public class MemberWs implements MemberService {
@@ -45,6 +46,9 @@ public class MemberWs implements MemberService {
 
     @Resource
     private KlUserLogic userLogic;
+
+    @Resource
+    private SysUserLogic sysUserLogic;
     //消息推送
     @Resource
     MessageSender messageSender;
@@ -195,6 +199,33 @@ public class MemberWs implements MemberService {
             throw new ServiceException(MemberErrorCodes.errorCodes_MEMBER_USER_NOT_EXIST);
         }
         return info;
+    }
+
+    @Override
+    public UserRoleInfo searchUser(@ApiParameter(required = true, name = "id", desc = "用户ID") long id) {
+        SysUser sysUser = sysUserLogic.selectUserRole(id);
+        if (sysUser != null){
+            UserRoleInfo userRoleInfo = new UserRoleInfo();
+            userRoleInfo.setUserName(sysUser.getUserName());
+            userRoleInfo.setPassword(sysUser.getPassword());
+            userRoleInfo.setRealName(sysUser.getRealName());
+            userRoleInfo.setMobile(sysUser.getMobile());
+            userRoleInfo.setEmail(sysUser.getEmail());
+            userRoleInfo.setDepartmentId(sysUser.getDepartmentId());
+            if (sysUser.getRoles() != null && sysUser.getRoles().size() > 0){
+                List<SysRoleInfo> sysRoleInfoList = new ArrayList<>();
+                sysUser.getRoles().forEach(role -> {
+                    SysRoleInfo sysRoleInfo = new SysRoleInfo();
+                    sysRoleInfo.setRoleId(role.getRoleId());
+                    sysRoleInfo.setName(role.getName());
+                    sysRoleInfo.setDescription(role.getDescription());
+                    sysRoleInfoList.add(sysRoleInfo);
+                });
+                userRoleInfo.setRoles(sysRoleInfoList);
+            }
+            return userRoleInfo;
+        }
+        return null;
     }
 
     private long getDeviceNumber() {

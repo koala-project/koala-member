@@ -1,3 +1,6 @@
-com\koala\member\api\response\UserInfo.class
+com\koala\member\api\response\CustomerLoginInfo.class
 com\koala\member\api\MemberService.class
+com\koala\member\api\response\UserRoleInfo.class
+com\koala\member\api\response\UserInfo.class
 com\koala\member\api\errors\MemberErrorCodes.class
+com\koala\member\api\response\SysRoleInfo.class
